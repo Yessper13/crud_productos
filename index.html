@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crud de Productos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <script src=""></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <h1 class="text-center text-primary my-5">Crud de productos</h1>
+            </div>
+            <div class="col-8">
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label">Nombre Producto</label>
+                        <input type="text" class="form-control" id="nombre-pro">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Precio</label>
+                        <input type="number" class="form-control" id="precio-pro">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Imagen</label>
+                        <input type="url" class="form-control" id="imagen-pro">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Descripcion</label>
+                        <input type="text" class="form-control" id="descripcion-pro">
+                    </div>
+                    <button type="button" class="btn-guardar btn btn-primary">Guardar</button>
+                    <button type="button" class="btn-borrar btn btn-primary">borrar memoria</button>
+                    <div class="seach">
+                        <label class="form-label">Buscar</label>
+                        <input type="text" class="form-control" id="buscar-pro">
+                    </div>
+                </form>
+            </div>
+            <div class="col-8">
+                <table class="table listado">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nombre</th>
+                            <th>Precio</th>
+                            <th>Descripcion</th>
+                            <th>Imagen</th>
+                            <th>accion</th>
+                        </tr>
+                        
+
+                        
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                
+        </div>
+    </div>
+
+
+    <script src="localStorage.js"></script>
+</body>
+</html>
