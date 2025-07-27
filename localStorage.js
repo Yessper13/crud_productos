@@ -7,25 +7,15 @@ let btnGuardar = document.querySelector(".btn-guardar");
 let btnBorrar = document.querySelector(".btn-borrar");
 let listadoTabla = document.querySelector(".listado tbody");
 let buscarPro = document.querySelector("#buscar-pro");
+let btnPdf = document.querySelector(".btn-pdf");
 
 
-localStorage.removeItem("nombre"); // Elimina el item "nombre" del localStorage */
+localStorage.removeItem("nombre"); // Elimina el item "nombre" del localStorage
  btnBorrar.addEventListener("click", () => {
     localStorage.clear();
     alert("localStorage borrado exitosamente");
 }); 
 
-
-btnGuardar.addEventListener("click", () => {
-    let infoPro=validForm()
-    if (infoPro) {
-        saveLocalStorage(infoPro);
-        clearTable();
-        getData();
-    }else{
-        return;
-    }
-});
 
 //evento para recargar la pagina y mostrar los datos guardados
 document.addEventListener("DOMContentLoaded", () => {
@@ -52,7 +42,6 @@ function validForm() {
 
     return producto;
 }
-
 
 //funcion para guaradar los datos en localStorage
 function saveLocalStorage(pro) {
@@ -101,15 +90,35 @@ listadoTabla.addEventListener("click", function(event) {
     }
 });
 
-let editIndex = null; // Variable para saber si estamos editando
+let editIndex = null; // Variable global para saber si estamos editando
 
-// Función para editar producto
+function guardarHandler() {
+    let infoPro = validForm();
+    if (infoPro) {
+        let productosGuardados = JSON.parse(localStorage.getItem("listado-pro")) || [];
+        if (editIndex !== null) {
+            // Modo edición: reemplaza el producto en la posición editIndex
+            productosGuardados[editIndex] = infoPro;
+            localStorage.setItem("listado-pro", JSON.stringify(productosGuardados));
+            editIndex = null; // Salimos del modo edición
+        } else {
+            // Modo nuevo: agrega el producto
+            productosGuardados.push(infoPro);
+            localStorage.setItem("listado-pro", JSON.stringify(productosGuardados));
+        }
+        clearTable();
+        getData();
+    }
+}
+
+btnGuardar.onclick = guardarHandler;
+
+// Al hacer clic en editar, activa el modo edición y rellena el formulario
 function editarProducto(index) {
     let productosGuardados = JSON.parse(localStorage.getItem("listado-pro")) || [];
     const producto = productosGuardados[index];
     if (!producto) return;
 
-    // Rellenar el formulario con los datos del producto
     nombrePro.value = producto.nombre;
     precioPro.value = producto.precio;
     imagenPro.value = producto.imagen;
@@ -152,3 +161,19 @@ function searchProduct() {
     });
 }
 
+
+// Función para generar un PDF con los productos
+function generarPDF() {
+    const tabla = document.querySelector('.listado');
+    html2canvas(tabla).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jspdf.jsPDF();
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save('productos.pdf');
+    });
+}
+
+btnPdf.addEventListener('click', generarPDF);
